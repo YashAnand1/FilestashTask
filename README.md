@@ -208,7 +208,7 @@ func main() {
 	}
 
 	// useSSL := false //i did not set this up so i could just leave this line blank and the default would be false as well
-	fmt.Println("Starting initialization\n") // for displaying where i am in the code, for my own use // can be removed
+	// fmt.Println("Starting initialization\n") // for displaying where i am in the code, for my own use // can be removed
 
 	////// connecting minio /////////////////////////////////////////////////////
 	minioClient, err := minio.New(endpoint, &minio.Options{
@@ -220,7 +220,7 @@ func main() {
 		log.Fatalln(err) // for loggin purposes/displaying any error in case connection gets failed
 	}
 
-	log.Printf("%#v\n", minioClient) // success message for my own reference // can be removed
+	// log.Printf("%#v\n", minioClient) // success message for my own reference // can be removed
 
 	// log.Printf("Printing username and possibly its policy as well") // success message for my own reference // can be removed
 	// fmt.Println(minio.NewPostPolicy())
@@ -231,6 +231,8 @@ func main() {
 	if err != nil {
 		log.Fatalln("Error listing buckets:", err)
 	}
+	fmt.Println("The assigned buckets to the user", user, "include:\n") //this prints bucket info wih its name and meta
+
 	for _, bucket := range buckets { /// this displays all of the keys exactly like filestash does, this is assigned to admin!
 		log.Println(bucket) //this prints bucket info wih its name and meta
 	}
@@ -268,6 +270,19 @@ func main() {
 }
 ```
 - In the code, if you change the username in `user == "<username>"` to Yash or Himanshu, the buckets being shown will be different. However, this approach can be **better utilised by defining policies instead of users** by retrieving them from JSON key of Minio.
+- When I have defined user=="Yash", I get the following output for running the `go run listing.go ` command:
+```
+The assigned buckets to the user yash are:
+
+2024/02/05 01:00:15 {bucket03 2024-02-04 16:57:11.129 +0000 UTC}
+2024/02/05 01:00:15 {bucketforonlyme 2024-02-04 16:56:18.776 +0000 UTC}
+```
+- When I defined user=="Himanshu", I get the following output:
+```
+The assigned buckets to the user himanshu are:
+
+2024/02/05 01:00:15 {bucketforonlyme 2024-02-04 16:56:18.776 +0000 UTC}
+```
 
 ## EOD Conclusion
 Mr. Himanshu and I were able to retrieve specific buckets based on the usernames and now the work plan includes modifying the existing code to retrieve JSON Key from Minio and provide buckets based on that.  
