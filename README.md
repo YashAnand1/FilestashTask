@@ -160,7 +160,7 @@ webpack 5.90.1 compiled with 1 error and 1 warning in 362 ms
             ]
         }
 ```
-        - Then I moved them to the **new** filestash container using `docker cp ~/Desktop/config/ filestash:/app/data/state/`
+- Then I moved them to the **new** filestash container using `docker cp ~/Desktop/config/ filestash:/app/data/state/`
 
 - Opened `http://localhost:8334/admin/backend` on browser, added `123` as password and performed the following actions:
         - Selected only S3 as 'Service Storage'
