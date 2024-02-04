@@ -73,7 +73,7 @@ webpack 5.90.1 compiled with 1 error and 1 warning in 362 ms
         - Entered the config directory to see the issue using `cd /app/data/state/` and found that `config` directory was not there
         - Decided to rerun the previously Filestash container and copied its `/app/data/state/config/config.json` to my Desktop
         - I then moved this `config.json` into a `config` directory. The content of this file was:
-        ```
+```
         {
             "general": {
                 "name": null,
@@ -159,7 +159,7 @@ webpack 5.90.1 compiled with 1 error and 1 warning in 362 ms
                 }
             ]
         }
-        ```
+```
         - Then I moved them to the **new** filestash container using `docker cp ~/Desktop/config/ filestash:/app/data/state/`
 
 - Opened `http://localhost:8334/admin/backend` on browser, added `123` as password and performed the following actions:
