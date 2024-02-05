@@ -1,6 +1,7 @@
 <div align="center">
 	
-# Filestash Task Collaboration
+# Filestash Task Collaboration 
+FEB4
 
 </div>
 
@@ -286,3 +287,162 @@ The assigned buckets to the user himanshu are:
 
 ## EOD Conclusion
 Mr. Himanshu and I were able to retrieve specific buckets based on the usernames and now the work plan includes modifying the existing code to retrieve JSON Key from Minio and provide buckets based on that.  
+
+_________________________
+_________________________
+_________________________
+
+<div align="center">
+	
+# Filestash Task Collaboration 
+FEB4
+
+</div>
+
+<div align="center">
+
+# February 5 Documentation
+</div>
+
+# Sample Filestash App Modification
+- From [this GetBucketPolicy section from MINIO Documentation](https://min.io/docs/minio/linux/developers/go/API.html#getbucketpolicy-ctx-context-context-bucketname-string-policy-string-error), I implemented the following to the sample application:
+```
+policy, err := minioClient.GetBucketPolicy(context.Background(), "bucket03")
+if err != nil { c
+    log.Fatalln(err)
+}
+```
+- In the above code, the "bucket03" is the policy that I was to be retrieving buckets for. However, this is not retrieving policies based on user but rather based on buckets.
+- The question is: How do we retrieve policies based on specific users.
+_______________
+
+# Running Server From /filestash/cmd/main.go
+## Issue 1
+- I faced the following error for running `go run main.go`:
+```
+go run main.go
+# github.com/mickael-kerjean/filestash/server/plugin/plg_image_c
+In file included from ../server/plugin/plg_image_c/image_raw.go:3:
+./image_raw.h:3:10: fatal error: libraw/libraw.h: No such file or directory
+    3 | #include <libraw/libraw.h>
+      |          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+```
+- In order to solve this issue, I utilised the following resources:
+        - [Libraw Installation](https://ubuntu.pkgs.org/20.04/ubuntu-main-amd64/libraw-dev_0.19.5-1ubuntu1_amd64.deb.html)
+        - [LibRaw Forum Post](https://www.libraw.org/node/2535)
+        - I understood that this error was occuring due to missing /libraw/libraw.h package
+- I utilised the [Libraw Installation](https://ubuntu.pkgs.org/20.04/ubuntu-main-amd64/libraw-dev_0.19.5-1ubuntu1_amd64.deb.html) for installing this library to `/filestash-master/server/plugin/plg_image_c`:
+        - sudo apt-get install libraw-dev
+
+## Issue 2
+After this installation, when I ran `main.go` again in `/filestash-master/cmd`, I got:
+```
+# github.com/mickael-kerjean/filestash/server/plugin/plg_image_c
+image_gif.c:4:10: fatal error: gif_lib.h: No such file or directory
+    4 | #include <gif_lib.h>
+      |          ^~~~~~~~~~~
+compilation terminated.
+```
+        - In order to solve this, I utilised [this Ubuntu Package resource](https://ubuntu.pkgs.org/20.04/ubuntu-main-amd64/libgif-dev_5.1.9-1_amd64.deb.html) to download libgif in the `filestash-master/server/plugin/plg_image_c` directory.
+
+## Issue 3
+Running `main.go` again in `/filestash-master/cmd` gave:
+```
+# github.com/mickael-kerjean/filestash/server/plugin/plg_image_c
+image_gif.c:5:10: fatal error: webp/encode.h: No such file or directory
+    5 | #include <webp/encode.h>
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+```
+        - Resource utilised: [Ubuntu.PKGS.org/libwebp-dev](https://ubuntu.pkgs.org/20.04/ubuntu-main-amd64/libgif-dev_5.1.9-1_amd64.deb.html) 
+        - Ran `sudo apt-get install libwebp-dev` to install this library
+
+Ran the following for installing these
+
+
+1. 
+1. 
+```
+# github.com/mickael-kerjean/filestash/server/plugin/plg_image_c
+In file included from ../server/plugin/plg_image_c/image_raw.go:3:
+./image_raw.h:3:10: fatal error: libraw/libraw.h: No such file or directory
+    3 | #include <libraw/libraw.h>
+      |          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+```
+- sudo apt-get install libraw-dev
+
+2.
+```
+# github.com/mickael-kerjean/filestash/server/plugin/plg_image_c
+image_gif.c:4:10: fatal error: gif_lib.h: No such file or directory
+    4 | #include <gif_lib.h>
+      |          ^~~~~~~~~~~
+compilation terminated.
+```
+- sudo apt-get install libgif-dev
+
+3. 
+```
+# github.com/mickael-kerjean/filestash/server/plugin/plg_image_c
+image_gif.c:5:10: fatal error: webp/encode.h: No such file or directory
+    5 | #include <webp/encode.h>
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+```
+- sudo apt-get install libwebp-dev
+
+4. 
+```
+# github.com/mickael-kerjean/filestash/server/plugin/plg_image_c
+image_heif.c:3:10: fatal error: libheif/heif.h: No such file or directory
+    3 | #include <libheif/heif.h>
+      |          ^~~~~~~~~~~~~~~~
+compilation terminated.
+```
+- sudo apt-get install libheif-dev
+- sudo apt-get install libheif1
+
+5. 
+```
+ github.com/mickael-kerjean/filestash/server/plugin/plg_image_c
+image_heif.c:4:10: fatal error: jpeglib.h: No such file or directory
+    4 | #include <jpeglib.h>
+      |          ^~~~~~~~~~~
+compilation terminated.
+```
+- Read: [StackOverflow Post](https://stackoverflow.com/questions/42292877/fatal-error-jpeglib-h-no-such-file-or-directory) 
+- sudo apt-get install libtiff-dev
+- sudo apt-get install libjpeg-dev
+
+6. 
+```
+# github.com/mickael-kerjean/filestash/server/plugin/plg_image_c
+image_png.c:4:10: fatal error: png.h: No such file or directory
+    4 | #include <png.h>
+      |          ^~~~~~~
+compilation terminated.
+```
+- sudo apt-get install libpng-dev
+
+7. Result
+```
+2024/02/05 14:08:40 SYST INFO Filestash v0.5 starting
+2024/02/05 14:08:40 SYST INFO [http] starting ...
+2024/02/05 14:08:40 SYST ERROR error: listen tcp :8334: bind: address already in use
+```
+
+8. Stopping 8334 Service
+```
+**netstat -tulnp | grep 8334**
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+tcp        0      0 0.0.0.0:8334            0.0.0.0:*               LISTEN      -                   
+tcp6       0      0 :::8334                 :::*                    LISTEN      -    
+
+**ps -aux | grep 8334** # Becasue process-id not showing up
+
+
+
+```
